@@ -31,7 +31,20 @@ namespace Conan.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(new OneContext("mongodb://localhost:27017"));
+            {
+                var password = Environment.GetEnvironmentVariable("CONAN_MONGO_PASSWORD");
+                if (password == null)
+                    throw new Exception("env CONAN_MONGO_PASSWORD is null");
+
+                var host = Environment.GetEnvironmentVariable("CONAN_MONGO_HOST");
+                if (host == null)
+                    throw new Exception("env CONAN_MONGO_HOST is null");
+
+                services.AddSingleton(new OneContext($"mongodb://root:{password}@{host}:27017"));
+            }
+
+
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
@@ -40,6 +53,8 @@ namespace Conan.API
             services.AddScoped<AuthMiddleware>();
             services.AddAutoMapper();
             services.AddScoped<Guardian>();
+
+            services.AddSwaggerGen();
 
             services.AddControllers(c =>
             {
@@ -75,6 +90,16 @@ namespace Conan.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 
