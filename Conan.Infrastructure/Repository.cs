@@ -14,7 +14,7 @@ namespace Conan.Infrastructure
 {
     // TODO: auto commit support, when in production
 
-    public abstract class Repository<T> : IRepository<T> where T : RootEntity
+    public class Repository<T> : IRepository<T> where T : RootEntity
     {
         private readonly IMediator mediator;
         private OneContext context { get; }
