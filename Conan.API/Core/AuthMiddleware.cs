@@ -32,7 +32,7 @@ namespace Con.API
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var token = context.Request.Cookies["LoginInfo"];
+            var token = context.Request.Cookies[$"{AppName}-LoginInfo"];
             if (token == null)
             {
                 goto fail;

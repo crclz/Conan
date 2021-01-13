@@ -80,6 +80,8 @@ namespace Conan.API
 
             app.UseAuthorization();
 
+            app.UseMiddleware<AuthMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
