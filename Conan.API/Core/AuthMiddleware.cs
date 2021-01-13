@@ -15,9 +15,10 @@ namespace Con.API
 {
     public class AuthMiddleware : IMiddleware
     {
-        public static readonly string SECRET = "e07df1bf8d9bb02b564bb6dfb80ed122";
-        private const string AppName = "Conan";
+        public static readonly string JwtSecret = "e07df1bf8d9bb02b564bb6dfb80ed122";
 
+        private static readonly string AppName = "Conan";
+        public static readonly string LoginInfoKey = $"{AppName}-LoginInfo";
 
         private readonly Auth _auth;
         private readonly IRepository<User> userRepository;
@@ -32,7 +33,7 @@ namespace Con.API
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var token = context.Request.Cookies[$"{AppName}-LoginInfo"];
+            var token = context.Request.Cookies[LoginInfoKey];
             if (token == null)
             {
                 goto fail;
@@ -42,26 +43,27 @@ namespace Con.API
             {
                 var info = new JwtBuilder()
                     .WithAlgorithm(new HMACSHA256Algorithm())
-                    .WithSecret(SECRET)
+                    .WithSecret(JwtSecret)
                     .MustVerifySignature()
                     .Decode<Dictionary<string, string>>(token);
 
-                var email = info["email"];
+                var username = info["username"];
                 var password = info["password"];
 
-                if (email == null || password == null)
+                if (username == null || password == null)
                     goto fail;
 
-                var user = await userRepository.SingleAsync(p => p.Email == email);
+                var user = await userRepository.SingleAsync(p => p.Username == username);
                 if (user == null)
                     goto fail;
 
                 if (user.Password != password)
                     goto fail;
 
-                // Login info check ok
+                // Login info check ok, modify auth object
 
                 _auth.RealUserId = user.Id;
+                _auth.IsAdmin = user.Username == "admin";
 
                 goto success;
             }
@@ -75,7 +77,7 @@ namespace Con.API
             }
 
         fail:
-            context.Response.Cookies.Delete("LoginInfo");
+            context.Response.Cookies.Delete(LoginInfoKey);
 
         success:
             await next(context);

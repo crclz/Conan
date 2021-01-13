@@ -8,6 +8,7 @@ namespace Conan.API
     public interface IAuth
     {
         bool IsAuthenticated { get; }
+        bool IsAdmin { get; }
         string UserId { get; }
     }
 }

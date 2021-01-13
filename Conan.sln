@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conan.Infrastructure", "Con
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conan.API", "Conan.API\Conan.API.csproj", "{8D77AE84-AAC6-429C-84BD-B4EABE9F4CE3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conan.Test", "Conan.Test\Conan.Test.csproj", "{FB629E5A-0E56-47A2-BB6E-D24EDA0A7D5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8D77AE84-AAC6-429C-84BD-B4EABE9F4CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D77AE84-AAC6-429C-84BD-B4EABE9F4CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D77AE84-AAC6-429C-84BD-B4EABE9F4CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB629E5A-0E56-47A2-BB6E-D24EDA0A7D5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB629E5A-0E56-47A2-BB6E-D24EDA0A7D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB629E5A-0E56-47A2-BB6E-D24EDA0A7D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB629E5A-0E56-47A2-BB6E-D24EDA0A7D5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

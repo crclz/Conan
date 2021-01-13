@@ -1,15 +1,18 @@
-﻿using System;
+﻿using Conan.API;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace Conan.API
+namespace Conan.Test.Dependency
 {
-    public class Auth : IAuth
+    public class FakeAuth : IAuth
     {
-        public string RealUserId { get; set; } = null;
         public bool IsAuthenticated => RealUserId != null;
+
         public string UserId => RealUserId;
+
+        public string RealUserId { get; set; }
+
         public bool IsAdmin { get; set; } = false;
     }
 }
