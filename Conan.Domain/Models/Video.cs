@@ -10,6 +10,22 @@ namespace Conan.Domain.Models
         public bool IsTV { get; set; }
         public int SeqId { get; set; }
         public int Publish { get; set; }
+
+        /// <summary> null if dont have a link </summary>
         public string BiliPlayId { get; set; }
+
+        private Video()
+        {
+            // required by driver
+        }
+
+        public Video(string title, bool isTV, int seqId, int publish, string biliPlayId)
+        {
+            Title = title ?? throw new ArgumentNullException(nameof(title));
+            IsTV = isTV;
+            SeqId = seqId;
+            Publish = publish;
+            BiliPlayId = biliPlayId;
+        }
     }
 }

@@ -20,5 +20,11 @@ namespace Conan.Domain.Models
             VideoId = videoId ?? throw new ArgumentNullException(nameof(videoId));
             UserId = userId ?? throw new ArgumentNullException(nameof(userId));
         }
+
+        public void RefreshViewTime()
+        {
+            UpdatedAtNow();
+            CreatedAt = UpdatedAt;
+        }
     }
 }
