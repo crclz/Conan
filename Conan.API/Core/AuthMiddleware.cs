@@ -33,7 +33,11 @@ namespace Con.API
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var token = context.Request.Cookies[LoginInfoKey];
+            var token = context.Request.Headers[LoginInfoKey].FirstOrDefault();
+
+            if (token == null)
+                token = context.Request.Cookies[LoginInfoKey];
+
             if (token == null)
             {
                 goto fail;

@@ -46,7 +46,7 @@ namespace Conan.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task Login([FromBody] LoginModel model)
+        public async Task<string> Login([FromBody] LoginModel model)
         {
             var user = await userRepository.SingleAsync(p => p.Username == model.Username);
 
@@ -73,6 +73,8 @@ namespace Conan.API.Controllers
                 Expires = DateTime.Now.AddYears(10)
             };
             Response.Cookies.Append(AuthMiddleware.LoginInfoKey, token, option);
+
+            return token;
         }
 
         [AutoMap(typeof(User))]

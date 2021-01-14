@@ -88,7 +88,7 @@ namespace Conan.API.Controllers
             await VideoRepository.SaveAsync(video);
         }
 
-        [HttpPut("{videoId}/view")]
+        [HttpGet("{videoId}/view")]
         public async Task<VideoView> GetView([FromRoute] string videoId)
         {
             Guardian.RequireLogin();
