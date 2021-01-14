@@ -13,6 +13,7 @@ namespace Conan.API.Dtos
         [MaxLength(10)]
         public string Name { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
         [MaxLength(500)]
         public string Description { get; set; }
 

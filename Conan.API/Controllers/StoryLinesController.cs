@@ -1,4 +1,5 @@
 ﻿using Conan.API.Dtos;
+using Conan.API.ResponseConvention;
 using Conan.Domain;
 using Conan.Domain.Models;
 using Conan.Dtos;
@@ -15,30 +16,59 @@ namespace Conan.API.Controllers
     [ApiController]
     public class StoryLinesController : ControllerBase
     {
-        public StoryLinesController(IRepository<StoryLine> storyLineRepository)
+        public StoryLinesController(IRepository<StoryLine> storyLineRepository,
+            Guardian guardian)
         {
             StoryLineRepository = storyLineRepository;
+            Guardian = guardian;
         }
 
         public IRepository<StoryLine> StoryLineRepository { get; }
-
+        public Guardian Guardian { get; }
 
         [HttpGet]
-        public IEnumerable<StoryLine> GetStoryLines()
+        public async Task<IEnumerable<StoryLine>> GetStoryLines()
         {
-            throw new NotImplementedException();
+            var lines = await StoryLineRepository.Query().HelperToListAsync();
+
+            return lines;
         }
 
         [HttpPost]
-        public IdDto CreateStoryline(CreateStorylineModel model)
+        public async Task<IdDto> CreateStoryline([FromBody] CreateStorylineModel model)
         {
-            throw new NotImplementedException();
+            Guardian.RequireAdmin();
+
+            var line = await StoryLineRepository.SingleAsync(p => p.Name == model.Name);
+            if (line != null)
+                throw new BadRequestException(BadCode.UniqueViolation, "重名");
+
+            line = new StoryLine(model.Name, model.Description, model.Videos);
+            await StoryLineRepository.SaveAsync(line);
+
+            return line.Id;
         }
 
         [HttpPatch("{id}")]
-        public void PatchStoryline(PatchStorylineModel model)
+        public async Task PatchStoryline([FromRoute] string id, [FromBody] PatchStorylineModel model)
         {
-            throw new NotImplementedException();
+            Guardian.RequireAdmin();
+
+            var line = await StoryLineRepository.ByIdAsync(id);
+
+            if (line == null)
+                throw new NotFoundException("storyline not found");
+
+            if (model.Name != null)
+                line.Name = model.Name;
+
+            if (model.Description != null)
+                line.Description = model.Description;
+
+            if (model.Videos != null)
+                line.Videos = model.Videos.ToList();
+
+            await StoryLineRepository.SaveAsync(line);
         }
     }
 }

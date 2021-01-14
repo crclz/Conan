@@ -21,12 +21,16 @@ namespace Conan.API.Controllers
         private readonly IAuth Auth;
         private readonly Guardian Guardian;
 
+        public IRepository<VideoView> ViewRepository { get; }
+
         public UsersController(
             IRepository<User> userRepository,
+            IRepository<VideoView> viewRepository,
             IAuth auth,
             Guardian guardian)
         {
             UserRepository = userRepository;
+            ViewRepository = viewRepository;
             Auth = auth;
             Guardian = guardian;
         }
@@ -82,9 +86,18 @@ namespace Conan.API.Controllers
         }
 
         [HttpGet("{userId}/video-views")]
-        public IEnumerable<VideoView> GetUserVideoViews(string userId)
+        public async Task<IEnumerable<VideoView>> GetUserVideoViews([FromRoute] string userId)
         {
-            throw new NotImplementedException();
+            Guardian.RequireLogin();
+
+            if (!Auth.IsAdmin && userId != Auth.UserId)
+                throw new ForbidException("Non admin cannot see other user's view records");
+
+            var views = await ViewRepository.Query()
+                .Where(p => p.UserId == userId).OrderBy(p => p.CreatedAt)
+                .HelperToListAsync();
+
+            return views;
         }
     }
 }

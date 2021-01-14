@@ -130,7 +130,7 @@ namespace Conan.API.Controllers
         }
 
         [HttpDelete("{videoId}/view")]
-        public async Task<IdDto> UnsetView(string videoId)
+        public async Task<IdDto> UnsetView([FromRoute] string videoId)
         {
             // video existence
             var video = await VideoRepository.ByIdAsync(videoId);

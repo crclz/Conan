@@ -15,6 +15,6 @@ namespace Conan.API.Dtos
         [MaxLength(500)]
         public string Description { get; set; }
 
-        public List<string> Videos { get; set; } = new List<string>();
+        public List<string> Videos { get; set; }
     }
 }
