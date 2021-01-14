@@ -80,5 +80,11 @@ namespace Conan.API.Controllers
                     throw new ArgumentException();
             }
         }
+
+        [HttpGet("{userId}/video-views")]
+        public IEnumerable<VideoView> GetUserVideoViews(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
