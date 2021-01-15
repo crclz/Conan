@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Conan.API.Dtos
 {
-    public class CreateVideoModel
+    public class PutVideoModel
     {
         [Required]
         [MinLength(1)]
@@ -20,7 +20,5 @@ namespace Conan.API.Dtos
         public int Publish { get; set; }
 
         public string BiliPlayId { get; set; }
-
-        public Guid? Deduplicatiion { get; set; }
     }
 }

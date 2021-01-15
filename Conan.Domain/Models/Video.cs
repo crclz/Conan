@@ -19,8 +19,9 @@ namespace Conan.Domain.Models
             // required by driver
         }
 
-        public Video(string title, bool isTV, int seqId, int publish, string biliPlayId)
+        public Video(string id, string title, bool isTV, int seqId, int publish, string biliPlayId)
         {
+            Id = id ?? throw new ArgumentNullException(nameof(id));
             Title = title ?? throw new ArgumentNullException(nameof(title));
             IsTV = isTV;
             SeqId = seqId;

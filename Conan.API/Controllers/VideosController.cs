@@ -33,26 +33,12 @@ namespace Conan.API.Controllers
         public IRepository<VideoView> ViewRepository { get; }
         public TheContext Context { get; }
 
-        [HttpPost]
-        public async Task<IdDto> CreateVideo([FromBody] CreateVideoModel model)
+        [HttpPut("{id}")]
+        public async Task<IdDto> PutVideo([FromRoute] string id, [FromBody] PutVideoModel model)
         {
             Guardian.RequireAdmin();
 
-            // dedup
-            if (model.Deduplicatiion != null)
-            {
-                var token = await Context.Dedups.SingleAsync(
-                    p => p.UserId == Auth.UserId && p.ClientProvidedToken == model.Deduplicatiion.Value);
-
-                // TODO: use exception
-                if (token != null)
-                    return null;
-
-                token = new DeduplicationToken(Auth.UserId, model.Deduplicatiion.Value);
-                await Context.Dedups.SaveAsync(token);
-            }
-
-            var video = new Video(model.Title, model.IsTV, model.SeqId, model.Publish, model.BiliPlayId);
+            var video = new Video(id, model.Title, model.IsTV, model.SeqId, model.Publish, model.BiliPlayId);
 
             await VideoRepository.SaveAsync(video);
             return video.Id;// implicit
