@@ -3,6 +3,7 @@ using Conan.API.ResponseConvention;
 using Conan.Domain;
 using Conan.Domain.Models;
 using Conan.Dtos;
+using Conan.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,23 +18,39 @@ namespace Conan.API.Controllers
     public class VideosController : ControllerBase
     {
         public VideosController(IRepository<Video> videoRepository, IAuth auth, Guardian guardian,
-            IRepository<VideoView> viewRepository)
+            IRepository<VideoView> viewRepository, TheContext context)
         {
             VideoRepository = videoRepository;
             Auth = auth;
             Guardian = guardian;
             ViewRepository = viewRepository;
+            Context = context;
         }
 
         public IRepository<Video> VideoRepository { get; }
         public IAuth Auth { get; }
         public Guardian Guardian { get; }
         public IRepository<VideoView> ViewRepository { get; }
+        public TheContext Context { get; }
 
         [HttpPost]
         public async Task<IdDto> CreateVideo([FromBody] CreateVideoModel model)
         {
             Guardian.RequireAdmin();
+
+            // dedup
+            if (model.Deduplicatiion != null)
+            {
+                var token = await Context.Dedups.SingleAsync(
+                    p => p.UserId == Auth.UserId && p.ClientProvidedToken == model.Deduplicatiion.Value);
+
+                // TODO: use exception
+                if (token != null)
+                    return null;
+
+                token = new DeduplicationToken(Auth.UserId, model.Deduplicatiion.Value);
+                await Context.Dedups.SaveAsync(token);
+            }
 
             var video = new Video(model.Title, model.IsTV, model.SeqId, model.Publish, model.BiliPlayId);
 

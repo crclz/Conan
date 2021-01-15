@@ -18,7 +18,9 @@ namespace Conan.API.Dtos
         public int SeqId { get; set; }
 
         public int Publish { get; set; }
-        
+
         public string BiliPlayId { get; set; }
+
+        public Guid? Deduplicatiion { get; set; }
     }
 }

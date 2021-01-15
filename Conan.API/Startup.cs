@@ -46,6 +46,8 @@ namespace Conan.API
 
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<TheContext>();
+
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.AddScoped<IAuth, Auth>();
