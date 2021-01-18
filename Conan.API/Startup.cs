@@ -57,6 +57,8 @@ namespace Conan.API
             services.AddAutoMapper();
             services.AddScoped<Guardian>();
 
+            services.AddResponseCompression();
+
             services.AddSwaggerGen(c =>
             {
                 c.CustomOperationIds(apiDesc =>
@@ -99,6 +101,8 @@ namespace Conan.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseResponseCompression();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

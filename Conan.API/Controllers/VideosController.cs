@@ -45,6 +45,7 @@ namespace Conan.API.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 5 * 60)]// TODO: remove this
         public async Task<IEnumerable<Video>> GetVideos(string keyword, bool? isTV, int? seqId)
         {
             var videos = await VideoRepository.Query().OrderBy(p => p.Publish).HelperToListAsync();

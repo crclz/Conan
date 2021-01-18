@@ -99,5 +99,17 @@ namespace Conan.API.Controllers
 
             return views;
         }
+
+        [HttpGet("my/video-views")]
+        public async Task<IEnumerable<VideoView>> GetMyVideoViews()
+        {
+            Guardian.RequireLogin();
+
+            var views = await ViewRepository.Query()
+                .Where(p => p.UserId == Auth.UserId).OrderBy(p => p.CreatedAt)
+                .HelperToListAsync();
+
+            return views;
+        }
     }
 }
