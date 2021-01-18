@@ -111,5 +111,19 @@ namespace Conan.API.Controllers
 
             return views;
         }
+
+        [HttpGet("my/video-views-recent")]
+        public async Task<IEnumerable<VideoView>> GetMyRecentVideoViews(int limit)
+        {
+            Guardian.RequireLogin();
+
+            var views = await ViewRepository.Query()
+                .Where(p => p.UserId == Auth.UserId)
+                .OrderByDescending(p => p.CreatedAt)
+                .Take(limit)
+                .HelperToListAsync();
+
+            return views;
+        }
     }
 }
