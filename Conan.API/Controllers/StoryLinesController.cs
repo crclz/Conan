@@ -5,6 +5,7 @@ using Conan.Domain.Models;
 using Conan.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,16 +35,19 @@ namespace Conan.API.Controllers
             return lines;
         }
 
-        [HttpPost]
-        public async Task<IdDto> CreateStoryline([FromBody] CreateStorylineModel model)
+        [HttpPut("{id}")]
+        public async Task<IdDto> PutStoryline([FromRoute] string id, [FromBody] PutStorylineModel model)
         {
             Guardian.RequireAdmin();
 
-            var line = await StoryLineRepository.SingleAsync(p => p.Name == model.Name);
+            if (string.IsNullOrWhiteSpace(id))
+                throw new BadRequestException(BadCode.InvalidModel, "id is null or whitespace");
+
+            var line = await StoryLineRepository.SingleAsync(p => p.Name == model.Name && p.Id != id);
             if (line != null)
                 throw new BadRequestException(BadCode.UniqueViolation, "重名");
 
-            line = new StoryLine(model.Name, model.Description, model.Videos);
+            line = new StoryLine(id, model.Name, model.Description, model.Videos);
             await StoryLineRepository.SaveAsync(line);
 
             return line.Id;

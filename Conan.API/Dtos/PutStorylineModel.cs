@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Conan.API.Dtos
 {
-    public class CreateStorylineModel
+    public class PutStorylineModel
     {
         [Required]
         [MinLength(1)]

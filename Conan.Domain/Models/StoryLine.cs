@@ -16,8 +16,9 @@ namespace Conan.Domain.Models
             // ef
         }
 
-        public StoryLine(string name, string description, List<string> videos)
+        public StoryLine(string id, string name, string description, List<string> videos)
         {
+            Id = id ?? throw new ArgumentNullException(nameof(id));
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description ?? throw new ArgumentNullException(nameof(description));
             Videos = videos ?? throw new ArgumentNullException(nameof(videos));
