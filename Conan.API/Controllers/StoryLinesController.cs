@@ -3,9 +3,12 @@ using Conan.API.ResponseConvention;
 using Conan.Domain;
 using Conan.Domain.Models;
 using Conan.Dtos;
+using Conan.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using MongoDB.Driver.Linq;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,22 +21,25 @@ namespace Conan.API.Controllers
     public class StoryLinesController : ControllerBase
     {
         public StoryLinesController(IRepository<StoryLine> storyLineRepository,
-            Guardian guardian)
+            Guardian guardian, TheContext context)
         {
             StoryLineRepository = storyLineRepository;
             Guardian = guardian;
+            Context = context;
         }
 
         public IRepository<StoryLine> StoryLineRepository { get; }
         public Guardian Guardian { get; }
+        public TheContext Context { get; }
 
         [HttpGet]
         public async Task<IEnumerable<StoryLine>> GetStoryLines()
         {
-            var lines = await StoryLineRepository.Query().HelperToListAsync();
+            var lines = await StoryLineRepository.Query().OrderBy(p => p.Id).HelperToListAsync();
 
             return lines;
         }
+
 
         [HttpPut("{id}")]
         public async Task<IdDto> PutStoryline([FromRoute] string id, [FromBody] PutStorylineModel model)
@@ -46,6 +52,17 @@ namespace Conan.API.Controllers
             var line = await StoryLineRepository.SingleAsync(p => p.Name == model.Name && p.Id != id);
             if (line != null)
                 throw new BadRequestException(BadCode.UniqueViolation, "重名");
+
+            // check each video id exists
+            var matchIds = await Context.Videos.Query()
+                .Where(p => model.Videos.Contains(p.Id)).Select(p => p.Id)
+                .HelperToListAsync();
+
+            var working = model.Videos.ToHashSet();
+            working.ExceptWith(matchIds);
+
+            if (working.Count > 0)
+                throw new BadRequestException(BadCode.ReferenceNotFound, $"Video {working.First()} not exist");
 
             line = new StoryLine(id, model.Name, model.Description, model.Videos);
             await StoryLineRepository.SaveAsync(line);
