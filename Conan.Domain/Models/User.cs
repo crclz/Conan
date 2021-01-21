@@ -11,10 +11,6 @@ namespace Conan.Domain.Models
     public class User : RootEntity
     {
         public string Username { get; private set; }
-
-        [BsonIgnoreIfNull]
-        public string Password { get; set; }
-
         public string Salt { get; private set; }
         public string PasswordHash { get; private set; }
 

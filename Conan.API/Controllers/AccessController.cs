@@ -53,7 +53,7 @@ namespace Conan.API.Controllers
             if (user == null)
                 throw new BadRequestException(BadCode.UserNotFound, "用户不存在");
 
-            if (user.Password != model.Password)
+            if (user.IsPasswordCorrect(model.Password))
                 throw new BadRequestException(BadCode.WrongPassword, "密码错误");
 
             // login ok, attach login info to token
@@ -65,7 +65,7 @@ namespace Conan.API.Controllers
                  .WithSecret(AuthMiddleware.JwtSecret)
                  .AddClaim("exp", nowAdd120Days)
                  .AddClaim("username", user.Username)
-                 .AddClaim("password", user.Password)
+                 .AddClaim("password", model.Password)
                  .Encode();
 
             var option = new CookieOptions()

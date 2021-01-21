@@ -61,7 +61,7 @@ namespace Con.API
                 if (user == null)
                     goto fail;
 
-                if (user.Password != password)
+                if (user.IsPasswordCorrect(password))
                     goto fail;
 
                 // Login info check ok, modify auth object

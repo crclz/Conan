@@ -8,8 +8,8 @@ namespace Conan.Migration
         {
             throw new Exception("Be careful with data");
 
-            var m = new M_2020_01_21__1_pwd();
-            m.DoMigration();
+            //var m = new M_2020_01_21__1_pwd();
+            //m.DoMigration();
         }
     }
 }
