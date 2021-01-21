@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conan.Domain", "Conan.Domain\Conan.Domain.csproj", "{5586BB97-0B7D-4EF7-940C-58FB03D951C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conan.Domain", "Conan.Domain\Conan.Domain.csproj", "{5586BB97-0B7D-4EF7-940C-58FB03D951C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conan.Infrastructure", "Conan.Infrastructure\Conan.Infrastructure.csproj", "{C3D3CC8A-2142-4766-BB0A-B553BECF24F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conan.Infrastructure", "Conan.Infrastructure\Conan.Infrastructure.csproj", "{C3D3CC8A-2142-4766-BB0A-B553BECF24F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conan.API", "Conan.API\Conan.API.csproj", "{8D77AE84-AAC6-429C-84BD-B4EABE9F4CE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conan.API", "Conan.API\Conan.API.csproj", "{8D77AE84-AAC6-429C-84BD-B4EABE9F4CE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conan.Test", "Conan.Test\Conan.Test.csproj", "{FB629E5A-0E56-47A2-BB6E-D24EDA0A7D5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conan.Test", "Conan.Test\Conan.Test.csproj", "{FB629E5A-0E56-47A2-BB6E-D24EDA0A7D5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conan.Migration", "Conan.Migration\Conan.Migration.csproj", "{5BF0B51B-4AC0-4B18-9260-249809913B51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{FB629E5A-0E56-47A2-BB6E-D24EDA0A7D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB629E5A-0E56-47A2-BB6E-D24EDA0A7D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB629E5A-0E56-47A2-BB6E-D24EDA0A7D5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BF0B51B-4AC0-4B18-9260-249809913B51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BF0B51B-4AC0-4B18-9260-249809913B51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BF0B51B-4AC0-4B18-9260-249809913B51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BF0B51B-4AC0-4B18-9260-249809913B51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

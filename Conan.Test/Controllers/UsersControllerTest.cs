@@ -61,7 +61,8 @@ namespace Conan.Test.Controllers
             var user = await userRepository.ByIdAsync(idDto.Id);
             Assert.NotNull(user);
             Assert.Equal(model.Username, user.Username);
-            Assert.Equal(model.Password, user.Password);
+
+            Assert.True(user.IsPasswordCorrect(model.Password));
         }
 
         #endregion
