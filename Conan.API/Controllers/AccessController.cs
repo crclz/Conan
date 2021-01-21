@@ -53,7 +53,7 @@ namespace Conan.API.Controllers
             if (user == null)
                 throw new BadRequestException(BadCode.UserNotFound, "用户不存在");
 
-            if (user.IsPasswordCorrect(model.Password))
+            if (!user.IsPasswordCorrect(model.Password))
                 throw new BadRequestException(BadCode.WrongPassword, "密码错误");
 
             // login ok, attach login info to token

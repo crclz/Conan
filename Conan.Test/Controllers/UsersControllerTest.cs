@@ -53,7 +53,7 @@ namespace Conan.Test.Controllers
             var model = new CreateUserModel
             {
                 Username = "u123123",
-                Password = "aaaaaaaa"
+                Password = "aaaaaaAa"
             };
             var idDto = await controller.CreateUser(model);
 
